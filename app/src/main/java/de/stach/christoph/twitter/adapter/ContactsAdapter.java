@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.stach.christoph.twitter.R;
 import de.stach.christoph.twitter.model.Contact;
 
@@ -17,22 +20,22 @@ import de.stach.christoph.twitter.model.Contact;
  * ContactsAdapter
  */
 public class ContactsAdapter extends BaseAdapter {
-    private Contact[] contacts;
+    private List<Contact> contacts;
     private Activity activity;
 
-    public ContactsAdapter(Contact[] contacts, Activity activity) {
+    public ContactsAdapter(List<Contact> contacts, Activity activity) {
         this.contacts = contacts;
         this.activity = activity;
     }
 
     @Override
     public int getCount() {
-        return contacts.length;
+        return contacts.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return contacts[i];
+        return contacts.get(i);
     }
 
     @Override
