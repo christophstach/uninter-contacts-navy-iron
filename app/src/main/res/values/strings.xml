@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Twitter</string>
+    <string name="app_login_username">Username:</string>
+    <string name="app_login_password">Password:</string>
+    <string name="app_login_login_button">Log In</string>
+</resources>
