@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/TwitterTheme">
+        android:theme="@style/TwitterTheme.NoActionBar">
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,7 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ContactsActivity"></activity>
+        <activity android:name=".activity.ContactsActivity" android:theme="@style/TwitterTheme.ActionBar"></activity>
     </application>
 
 </manifest>

@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import de.stach.christoph.twitter.R;
 import de.stach.christoph.twitter.adapter.ContactsAdapter;
@@ -40,5 +42,14 @@ public class ContactsActivity extends AppCompatActivity {
                 listViewContacts.setVisibility(View.VISIBLE);
             }
         }, 5000);*/
+
+        this.listViewContacts.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Contact contact = (Contact) parent.getAdapter().getItem(position);
+
+                Toast.makeText(ContactsActivity.this, contact.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
