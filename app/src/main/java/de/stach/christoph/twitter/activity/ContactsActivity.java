@@ -1,5 +1,7 @@
 package de.stach.christoph.twitter.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -50,6 +52,17 @@ public class ContactsActivity extends AppCompatActivity {
                 Toast.makeText(ContactsActivity.this, contact.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        listViewContacts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ContactsActivity.this, "Long Click: " + position, Toast.LENGTH_SHORT).show();
+
+                return true;
+            }
+
+
+        });
     }
 
     @Override
@@ -65,8 +78,9 @@ public class ContactsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add_contact:
-                contacts.add(new Contact("New", "Contact", "+49 "));
-                contactsAdapter.notifyDataSetChanged();
+                Intent intentContactForm = new Intent(this, ContactFormActivity.class);
+                startActivityForResult(intentContactForm, 1);
+
                 return true;
 
             case R.id.menu_remove_contact:
@@ -76,6 +90,19 @@ public class ContactsActivity extends AppCompatActivity {
             default:
                 Toast.makeText(this, "Invalid Action", Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    Contact contact = (Contact) data.getSerializableExtra("contact");
+                    this.contacts.add(contact);
+                    this.contactsAdapter.notifyDataSetChanged();
+                }
+                break;
         }
     }
 }

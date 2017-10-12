@@ -15,7 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ContactsActivity" android:theme="@style/TwitterTheme.ActionBar"></activity>
+        <activity
+            android:name=".activity.ContactsActivity"
+            android:theme="@style/TwitterTheme.ActionBar" />
+        <activity android:name=".activity.ContactFormActivity"></activity>
     </application>
 
 </manifest>
