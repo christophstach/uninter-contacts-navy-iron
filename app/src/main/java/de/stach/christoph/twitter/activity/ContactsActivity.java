@@ -2,6 +2,8 @@ package de.stach.christoph.twitter.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -49,15 +52,22 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Contact contact = (Contact) parent.getAdapter().getItem(position);
-                Toast.makeText(ContactsActivity.this, contact.toString(), Toast.LENGTH_SHORT).show();
+                LinearLayout layout = (LinearLayout) view;
+                ColorDrawable background = (ColorDrawable) layout.getBackground();
+
+                if(background != null && background.getColor() == Color.LTGRAY) {
+                    layout.setBackgroundColor(Color.TRANSPARENT);
+                }
             }
         });
 
         listViewContacts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ContactsActivity.this, "Long Click: " + position, Toast.LENGTH_SHORT).show();
+                Contact contact = (Contact) parent.getAdapter().getItem(position);
+                LinearLayout layout = (LinearLayout) view;
 
+                layout.setBackgroundColor(Color.LTGRAY);
                 return true;
             }
 
