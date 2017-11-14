@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import de.stach.christoph.twitter.R;
 public class LoginActivity extends AppCompatActivity {
     private Button buttonLogin;
     private ImageView imageViewLogo;
+    private EditText editTextTelephoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
         buttonLogin = (Button) findViewById(R.id.buttonLogIn);
         imageViewLogo = (ImageView) findViewById(R.id.imageViewLogo);
+        editTextTelephoneNumber = (EditText) findViewById(R.id.editTextTelephoneNumber);
     }
 
 
@@ -45,12 +48,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void showMsg(View view) {
-        Toast.makeText(this, "Mi mesage", Toast.LENGTH_SHORT).show();
-    }
-
     public void logIn(View view) {
         Intent intentContacts = new Intent(this, ContactsActivity.class);
+        startActivity(intentContacts);
+    }
+
+    public void register(View view) {
+        Intent intentContacts = new Intent(this, RegisterFormActivity.class);
         startActivity(intentContacts);
     }
 

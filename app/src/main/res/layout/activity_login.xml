@@ -14,39 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginBottom="40dp"
-        android:onClick="showMsg"
         app:srcCompat="@drawable/twitter_logo_white" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="@string/app_login_username"
+        android:text="@string/telephone_number"
         android:textColor="@color/blanco" />
 
     <EditText
-        android:id="@+id/editTextUsername"
+        android:id="@+id/editTextTelephoneNumber"
         style="@style/RoundedInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:inputType="textEmailAddress" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/app_login_password"
-        android:textColor="#ffffff" />
-
-
-    <EditText
-        android:id="@+id/editTextPassword"
-        style="@style/RoundedInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:inputType="textPassword" />
+        android:inputType="phone" />
 
     <Button
         android:id="@+id/buttonLogIn"
@@ -54,7 +37,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="logIn"
+        android:layout_marginBottom="20dp"
         android:text="@string/app_login_login_button"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/buttonRegister"
+        style="@style/RoundedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="register"
+        android:text="@string/app_login_register_button"
         android:textAlignment="center" />
 
 

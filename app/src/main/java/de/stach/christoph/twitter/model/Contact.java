@@ -12,6 +12,7 @@ public class Contact implements Serializable {
     private String firstName;
     private String lastName;
     private String telephoneNumber;
+    private String userTelephoneNubmer;
     private String latitude;
     private String longitude;
 
