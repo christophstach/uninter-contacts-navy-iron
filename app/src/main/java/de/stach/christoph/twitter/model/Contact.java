@@ -1,5 +1,7 @@
 package de.stach.christoph.twitter.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -9,9 +11,16 @@ import java.io.Serializable;
  */
 
 public class Contact implements Serializable {
+    @SerializedName("nombre")
     private String firstName;
+
+    @SerializedName("apellido")
     private String lastName;
+
+    @SerializedName("telefono")
     private String telephoneNumber;
+
+    @SerializedName("usario_telefono")
     private String userTelephoneNubmer;
     private String latitude;
     private String longitude;

@@ -43,9 +43,9 @@ public class RegisterFormActivity extends AppCompatActivity {
             json.put("apellido", this.editTextLastName.getText());
 
 
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
             String url = "http://esecorporativo.com.mx/uninter/usuarios/create";
 
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.POST,
                     url,

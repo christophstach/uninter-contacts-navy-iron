@@ -10,7 +10,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 import de.stach.christoph.twitter.R;
+import de.stach.christoph.twitter.model.User;
 
 public class LoginActivity extends AppCompatActivity {
     private Button buttonLogin;
@@ -49,8 +60,36 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void logIn(View view) {
-        Intent intentContacts = new Intent(this, ContactsActivity.class);
-        startActivity(intentContacts);
+        if (!this.editTextTelephoneNumber.getText().equals("")) {
+            final Intent intentContacts = new Intent(this, ContactsActivity.class);
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            String url = "http://esecorporativo.com.mx/uninter/usuarios/read/telefono=" + this.editTextTelephoneNumber.getText();
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    url,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                User user = new Gson().fromJson(response.getJSONArray("data").getJSONObject(0).toString(), User.class);
+                                startActivity(intentContacts);
+                            } catch (Exception e) {
+                                Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(LoginActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            );
+
+            requestQueue.add(jsonObjectRequest);
+        }
     }
 
     public void register(View view) {
