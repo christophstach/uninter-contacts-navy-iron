@@ -1,6 +1,8 @@
 package de.stach.christoph.twitter.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,15 +29,24 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonLogin;
     private ImageView imageViewLogo;
     private EditText editTextTelephoneNumber;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        sharedPreferences = LoginActivity.this.getSharedPreferences("de.stach.christoph.twitter", Context.MODE_PRIVATE);
+        String userJson = sharedPreferences.getString("user", "");
 
-        buttonLogin = (Button) findViewById(R.id.buttonLogIn);
-        imageViewLogo = (ImageView) findViewById(R.id.imageViewLogo);
-        editTextTelephoneNumber = (EditText) findViewById(R.id.editTextTelephoneNumber);
+        if (!userJson.equals("")) {
+            final Intent intentContacts = new Intent(this, ContactsActivity.class);
+            startActivity(intentContacts);
+            LoginActivity.this.finish();
+        } else {
+            setContentView(R.layout.activity_login);
+            buttonLogin = (Button) findViewById(R.id.buttonLogIn);
+            imageViewLogo = (ImageView) findViewById(R.id.imageViewLogo);
+            editTextTelephoneNumber = (EditText) findViewById(R.id.editTextTelephoneNumber);
+        }
     }
 
 
@@ -60,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void logIn(View view) {
-        if (!this.editTextTelephoneNumber.getText().equals("")) {
+        if (!this.editTextTelephoneNumber.getText().toString().equals("")) {
             final Intent intentContacts = new Intent(this, ContactsActivity.class);
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             String url = "http://esecorporativo.com.mx/uninter/usuarios/read/telefono=" + this.editTextTelephoneNumber.getText();
@@ -73,10 +84,16 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                User user = new Gson().fromJson(response.getJSONArray("data").getJSONObject(0).toString(), User.class);
+                                //User user = new Gson().fromJson(response.getJSONArray("data").getJSONObject(0).toString(), User.class);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("user", response.getJSONArray("data").getJSONObject(0).toString());
+                                editor.apply();
+
+
                                 startActivity(intentContacts);
+                                LoginActivity.this.finish();
                             } catch (Exception e) {
-                                Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     },
@@ -89,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
             );
 
             requestQueue.add(jsonObjectRequest);
+        } else {
+            Toast.makeText(this, "Please enter a telephone number!", Toast.LENGTH_SHORT).show();
         }
     }
 

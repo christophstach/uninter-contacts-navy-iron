@@ -21,9 +21,7 @@ public class Contact implements Serializable {
     private String telephoneNumber;
 
     @SerializedName("usario_telefono")
-    private String userTelephoneNubmer;
-    private String latitude;
-    private String longitude;
+    private String userTelephoneNumber;
 
     public Contact() {
     }
@@ -32,14 +30,6 @@ public class Contact implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.telephoneNumber = telephoneNumber;
-    }
-
-    public Contact(String firstName, String lastName, String telephoneNumber, String latitude, String longitude) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.telephoneNumber = telephoneNumber;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     public String getFirstName() {

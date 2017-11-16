@@ -21,8 +21,6 @@ public class ContactFormActivity extends AppCompatActivity {
         editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
         editTextLastName = (EditText) findViewById(R.id.editTextLastName);
         editTextTelephoneNumber = (EditText) findViewById(R.id.editTextTelephoneNumber);
-        editTextLongitude = (EditText) findViewById(R.id.editTextLongitude);
-        editTextLatitude = (EditText) findViewById(R.id.editTextLatitude);
     }
 
     public void save(View view) {
@@ -30,9 +28,7 @@ public class ContactFormActivity extends AppCompatActivity {
         Contact contact = new Contact(
                 editTextFirstName.getText().toString(),
                 editTextLastName.getText().toString(),
-                editTextTelephoneNumber.getText().toString(),
-                editTextLongitude.getText().toString(),
-                editTextLatitude.getText().toString()
+                editTextTelephoneNumber.getText().toString()
         );
 
         response.putExtra("contact", contact);

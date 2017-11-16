@@ -17,6 +17,20 @@ public class User {
     @SerializedName("telefono")
     private String telephone;
 
+    @SerializedName("longitud")
+    private double longitude;
+
+    @SerializedName("latitud")
+    private double latitude;
+
+    public User(String firstName, String lastName, String telephone, double longitude, double latitude) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.telephone = telephone;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -41,12 +55,30 @@ public class User {
         this.telephone = telephone;
     }
 
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", telephone='" + telephone + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
                 '}';
     }
 }

@@ -1,10 +1,18 @@
 package de.stach.christoph.twitter.activity;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,12 +37,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.stach.christoph.twitter.R;
 import de.stach.christoph.twitter.adapter.ContactsAdapter;
 import de.stach.christoph.twitter.model.Contact;
+import de.stach.christoph.twitter.model.User;
 
 public class ContactsActivity extends AppCompatActivity {
     private Toolbar toolbarContacts;
@@ -42,18 +50,17 @@ public class ContactsActivity extends AppCompatActivity {
     private ProgressBar progressBarContacts;
     private List<Contact> contacts = new ArrayList<>();
     private ContactsAdapter contactsAdapter;
+    private String userJson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        /* contacts.addAll(Arrays.asList(new Contact[]{
-                new Contact("Christoph", "Stach", "+52 55 123 444"),
-                new Contact("Annegret", "Stach", "+49 5923 6807"),
-                new Contact("Rüdiger", "Stach", "+32 42334 121"),
-                new Contact("Laila", "Westphal", "+39 123 4454")
-        }));*/
+        SharedPreferences sharedPreferences = this.getSharedPreferences("de.stach.christoph.twitter", Context.MODE_PRIVATE);
+        this.userJson = sharedPreferences.getString("user", "");
+
+        getLocation();
 
         listViewContacts = (ListView) findViewById(R.id.listViewContacts);
         contactsAdapter = new ContactsAdapter(contacts, this);
@@ -87,7 +94,8 @@ public class ContactsActivity extends AppCompatActivity {
 
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://esecorporativo.com.mx/uninter/contactos/read/usuario_telefono=55555";
+        User user = new Gson().fromJson(this.userJson, User.class);
+        String url = "http://esecorporativo.com.mx/uninter/contactos/read/usuario_telefono=" + user.getTelephone();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -156,11 +164,12 @@ public class ContactsActivity extends AppCompatActivity {
                     JSONObject json = new JSONObject();
 
                     try {
+                        User user = new Gson().fromJson(this.userJson, User.class);
 
                         json.put("nombre", contact.getFirstName());
                         json.put("apellido", contact.getLastName());
                         json.put("telefono", contact.getTelephoneNumber());
-                        json.put("usuario_telefono", "55555");
+                        json.put("usuario_telefono", user.getTelephone());
 
 
                         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -194,5 +203,79 @@ public class ContactsActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    protected void getLocation() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Toast.makeText(ContactsActivity.this, "Location: " + location.getLongitude() + "," + location.getLatitude(), Toast.LENGTH_SHORT).show();
+
+
+                try {
+                    User user = new Gson().fromJson(ContactsActivity.this.userJson, User.class);
+                    JSONObject json = new JSONObject();
+
+                    json.put("nombre", user.getFirstName());
+                    json.put("apellido", user.getLastName());
+
+                    json.put("latitud", location.getLatitude());
+                    json.put("longitud", location.getLongitude());
+
+                    RequestQueue requestQueue = Volley.newRequestQueue(ContactsActivity.this);
+                    String url = "http://esecorporativo.com.mx/uninter/usuarios/update/" + user.getTelephone();
+
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                            Request.Method.POST,
+                            url,
+                            json,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(ContactsActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                    );
+
+                    requestQueue.add(jsonObjectRequest);
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the userJson grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 }
