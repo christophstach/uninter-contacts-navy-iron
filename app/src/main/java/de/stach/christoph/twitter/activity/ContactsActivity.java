@@ -149,6 +149,13 @@ public class ContactsActivity extends AppCompatActivity {
                 Toast.makeText(this, "Remove Contact", Toast.LENGTH_SHORT).show();
                 return true;
 
+            case R.id.menu_open_map:
+                Intent mapActivity = new Intent(this, MapActivity.class);
+                startActivity(mapActivity);
+
+                return true;
+
+
             default:
                 Toast.makeText(this, "Invalid Action", Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
