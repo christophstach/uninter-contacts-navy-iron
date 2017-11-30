@@ -23,6 +23,12 @@ public class Contact implements Serializable {
     @SerializedName("usario_telefono")
     private String userTelephoneNumber;
 
+    @SerializedName("longitud")
+    private double longitude;
+
+    @SerializedName("latitud")
+    private double latitude;
+
     public Contact() {
     }
 
@@ -54,6 +60,22 @@ public class Contact implements Serializable {
 
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     @Override

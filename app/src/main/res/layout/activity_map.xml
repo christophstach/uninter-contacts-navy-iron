@@ -6,10 +6,9 @@
     android:orientation="vertical"
     tools:context="de.stach.christoph.twitter.activity.MapActivity">
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+    <fragment
+        android:id="@+id/fragmentMap"
+        android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="223dp"
-        tools:layout_editor_absoluteY="115dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>
